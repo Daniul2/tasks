@@ -24,12 +24,13 @@ public class TaskController {
     public void deleteTask(@PathVariable Long taskId) {
     }
 
-    @PutMapping
-    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
-        return new TaskDto(1L, "Edited test title", "Test content");
+    @PutMapping("/{taskId}")
+    public TaskDto updateTask(@PathVariable Long taskId, @RequestBody TaskDto taskDto) {
+        return new TaskDto(taskId, "Edited test title", "Test content");
     }
 
     @PostMapping
-    public void createTask(@RequestBody TaskDto taskDto) {
+    public TaskDto createTask(@RequestBody TaskDto taskDto) {
+        return new TaskDto(1L, taskDto.getTitle(), taskDto.getContent());
     }
 }
