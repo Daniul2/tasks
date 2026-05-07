@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("/v1/tasks")
 @RequiredArgsConstructor
 public class TaskController {
-
     private final DbService service;
     private final TaskMapper taskMapper;
 
@@ -32,7 +31,7 @@ public class TaskController {
     @DeleteMapping(value = "{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
         service.deleteTask(taskId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping
