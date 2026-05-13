@@ -1,7 +1,5 @@
 package com.kodilla.library.dto;
-public record BookInstanceDto(
-        Long id,
-        Long titleId,
-        String status
-) {
-}
+
+import com.kodilla.library.domain.BookStatus;
+
+public record BookInstanceDto(Long id, Long titleId, BookStatus status) {}

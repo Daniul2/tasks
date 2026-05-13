@@ -1,5 +1,6 @@
 package com.example.news.core.model;
 
+
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

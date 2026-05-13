@@ -20,16 +20,8 @@ public class LibraryMapper {
         return new Reader(readerDto.id(), readerDto.firstname(), readerDto.lastname(), readerDto.signUpDate());
     }
 
-    public ReaderDto mapToReaderDto(Reader reader) {
-        return new ReaderDto(reader.getId(), reader.getFirstname(), reader.getLastname(), reader.getSignUpDate());
-    }
-
     public Title mapToTitle(TitleDto titleDto) {
         return new Title(titleDto.id(), titleDto.title(), titleDto.author(), titleDto.releaseYear());
-    }
-
-    public TitleDto mapToTitleDto(Title title) {
-        return new TitleDto(title.getId(), title.getTitle(), title.getAuthor(), title.getReleaseYear());
     }
 
     public BookInstance mapToBookInstance(BookInstanceDto dto) {
@@ -37,9 +29,4 @@ public class LibraryMapper {
                 .orElseThrow(() -> new RuntimeException("Title not found"));
         return new BookInstance(dto.id(), title, dto.status());
     }
-
-    public BookInstanceDto mapToBookInstanceDto(BookInstance instance) {
-        return new BookInstanceDto(instance.getId(), instance.getTitle().getId(), instance.getStatus());
-    }
 }
-

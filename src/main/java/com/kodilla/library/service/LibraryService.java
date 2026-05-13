@@ -1,9 +1,6 @@
 package com.kodilla.library.service;
 
-import com.kodilla.library.domain.BookInstance;
-import com.kodilla.library.domain.Reader;
-import com.kodilla.library.domain.Rental;
-import com.kodilla.library.domain.Title;
+import com.kodilla.library.domain.*;
 import com.kodilla.library.repository.BookInstanceRepository;
 import com.kodilla.library.repository.ReaderRepository;
 import com.kodilla.library.repository.RentalRepository;
@@ -17,14 +14,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 
-public class LibraryService {
 
+public class LibraryService {
     private final ReaderRepository readerRepository;
     private final TitleRepository titleRepository;
     private final BookInstanceRepository bookInstanceRepository;
     private final RentalRepository rentalRepository;
 
     public Reader saveReader(Reader reader) {
+        if (reader.getSignUpDate() == null) reader.setSignUpDate(LocalDate.now());
         return readerRepository.save(reader);
     }
 
@@ -36,7 +34,7 @@ public class LibraryService {
         return bookInstanceRepository.save(instance);
     }
 
-    public void updateInstanceStatus(Long id, String status) {
+    public void updateInstanceStatus(Long id, BookStatus status) {
         BookInstance instance = bookInstanceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Instance not found"));
         instance.setStatus(status);
@@ -44,37 +42,31 @@ public class LibraryService {
     }
 
     public long getAvailableCount(String title) {
-        return bookInstanceRepository.countByTitle_TitleAndStatus(title, "available");
+        return bookInstanceRepository.countByTitle_TitleAndStatus(title, BookStatus.AVAILABLE);
     }
 
     @Transactional
     public Rental rentBook(Long readerId, Long titleId) {
-        List<BookInstance> availableInstances = bookInstanceRepository.findByTitle_IdAndStatus(titleId, "available");
+        List<BookInstance> available = bookInstanceRepository.findByTitle_IdAndStatus(titleId, BookStatus.AVAILABLE);
+        if (available.isEmpty()) throw new RuntimeException("No copies available");
 
-        if (availableInstances.isEmpty()) {
-            throw new RuntimeException("No available instances for this title");
-        }
-
-        BookInstance instanceToRent = availableInstances.get(0);
         Reader reader = readerRepository.findById(readerId)
                 .orElseThrow(() -> new RuntimeException("Reader not found"));
 
-        instanceToRent.setStatus("rented");
-        bookInstanceRepository.save(instanceToRent);
+        BookInstance instance = available.get(0);
+        instance.setStatus(BookStatus.RENTED);
 
-        Rental rental = new Rental(null, instanceToRent, reader, LocalDate.now(), null);
+        Rental rental = new Rental(null, instance, reader, LocalDate.now(), null);
         return rentalRepository.save(rental);
     }
 
     @Transactional
     public void returnBook(Long instanceId) {
         Rental rental = rentalRepository.findByBookInstance_IdAndReturnDateIsNull(instanceId)
-                .orElseThrow(() -> new RuntimeException("No active rental found for this instance"));
+                .orElseThrow(() -> new RuntimeException("No active rental found"));
 
         rental.setReturnDate(LocalDate.now());
-
-        rental.getBookInstance().setStatus("available");
-
+        rental.getBookInstance().setStatus(BookStatus.AVAILABLE);
         rentalRepository.save(rental);
     }
 }

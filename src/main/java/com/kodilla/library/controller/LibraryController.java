@@ -1,5 +1,6 @@
 package com.kodilla.library.controller;
 
+import com.kodilla.library.domain.BookStatus;
 import com.kodilla.library.dto.BookInstanceDto;
 import com.kodilla.library.dto.ReaderDto;
 import com.kodilla.library.dto.TitleDto;
@@ -12,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/library")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-
 public class LibraryController {
-
     private final LibraryService service;
     private final LibraryMapper mapper;
 
@@ -37,7 +36,7 @@ public class LibraryController {
     }
 
     @PatchMapping("/instances/{id}/status")
-    public ResponseEntity<Void> updateStatus(@PathVariable Long id, @RequestParam String status) {
+    public ResponseEntity<Void> updateStatus(@PathVariable Long id, @RequestParam BookStatus status) {
         service.updateInstanceStatus(id, status);
         return ResponseEntity.ok().build();
     }

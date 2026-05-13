@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 @Entity
 @Table(name = "BOOK_INSTANCES")
 @Getter
@@ -20,6 +22,6 @@ public class BookInstance {
     @JoinColumn(name = "TITLE_ID")
     private Title title;
 
-    private String status;
-
+    @Enumerated(EnumType.STRING)
+    private BookStatus status;
 }

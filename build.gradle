@@ -4,11 +4,13 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.6'
 }
 
-group = 'com.tasks'
+group = 'com.kodilla'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
 }
 
 configurations {
@@ -22,29 +24,35 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'com.mysql:mysql-connector-j'
 
-	compileOnly 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2'
 
-	annotationProcessor 'org.projectlombok:lombok'
+	// Lombok
+	compileOnly 'org.projectlombok:lombok:1.18.34'
+	annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+	// Tests
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	testImplementation 'io.cucumber:cucumber-java:7.18.0'
-	testImplementation 'io.cucumber:cucumber-spring:7.18.0'
-	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.0'
-	testImplementation 'org.junit.platform:junit-platform-suite:1.10.2'
+	// Cucumber
+	testImplementation 'io.cucumber:cucumber-java:7.20.1'
+	testImplementation 'io.cucumber:cucumber-spring:7.20.1'
+	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.20.1'
+	testImplementation 'org.junit.platform:junit-platform-suite:1.11.0'
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
 springBoot {
-	mainClass = 'com.example.news.NewsApplication'
+	mainClass = 'com.kodilla.library.LibraryApplication'
 }
