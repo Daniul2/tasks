@@ -9,6 +9,9 @@ import com.kodilla.library.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/library")
 @RequiredArgsConstructor
@@ -23,16 +26,31 @@ public class LibraryController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/readers") // DODANE
+    public ResponseEntity<List<ReaderDto>> getReaders() {
+        return ResponseEntity.ok(mapper.mapToReaderDtoList(service.getAllReaders()));
+    }
+
     @PostMapping("/titles")
     public ResponseEntity<Void> addTitle(@RequestBody TitleDto titleDto) {
         service.saveTitle(mapper.mapToTitle(titleDto));
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/titles") // DODANE
+    public ResponseEntity<List<TitleDto>> getTitles() {
+        return ResponseEntity.ok(mapper.mapToTitleDtoList(service.getAllTitles()));
+    }
+
     @PostMapping("/instances")
     public ResponseEntity<Void> addInstance(@RequestBody BookInstanceDto dto) {
         service.saveInstance(mapper.mapToBookInstance(dto));
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/instances") // DODANE
+    public ResponseEntity<List<BookInstanceDto>> getInstances() {
+        return ResponseEntity.ok(mapper.mapToBookInstanceDtoList(service.getAllInstances()));
     }
 
     @PatchMapping("/instances/{id}/status")

@@ -69,4 +69,15 @@ public class LibraryService {
         rental.getBookInstance().setStatus(BookStatus.AVAILABLE);
         rentalRepository.save(rental);
     }
+    public List<Reader> getAllReaders() {
+        return readerRepository.findAll();
+    }
+
+    public List<Title> getAllTitles() {
+        return titleRepository.findAll();
+    }
+
+    public List<BookInstance> getAllInstances() {
+        return bookInstanceRepository.findAll();
+    }
 }

@@ -9,4 +9,5 @@ import java.util.List;
 public interface BookInstanceRepository extends CrudRepository<BookInstance, Long> {
     List<BookInstance> findByTitle_IdAndStatus(Long titleId, BookStatus status);
     long countByTitle_TitleAndStatus(String title, BookStatus status);
+    List<BookInstance> findAll();
 }

@@ -10,6 +10,8 @@ import com.kodilla.library.repository.TitleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,13 +22,43 @@ public class LibraryMapper {
         return new Reader(readerDto.id(), readerDto.firstname(), readerDto.lastname(), readerDto.signUpDate());
     }
 
+    public ReaderDto mapToReaderDto(Reader reader) {
+        return new ReaderDto(reader.getId(), reader.getFirstname(), reader.getLastname(), reader.getSignUpDate());
+    }
+
+    public List<ReaderDto> mapToReaderDtoList(List<Reader> readers) {
+        return readers.stream()
+                .map(this::mapToReaderDto)
+                .toList();
+    }
+
     public Title mapToTitle(TitleDto titleDto) {
         return new Title(titleDto.id(), titleDto.title(), titleDto.author(), titleDto.releaseYear());
+    }
+
+    public TitleDto mapToTitleDto(Title title) {
+        return new TitleDto(title.getId(), title.getTitle(), title.getAuthor(), title.getReleaseYear());
+    }
+
+    public List<TitleDto> mapToTitleDtoList(List<Title> titles) {
+        return titles.stream()
+                .map(this::mapToTitleDto)
+                .toList();
     }
 
     public BookInstance mapToBookInstance(BookInstanceDto dto) {
         Title title = titleRepository.findById(dto.titleId())
                 .orElseThrow(() -> new RuntimeException("Title not found"));
         return new BookInstance(dto.id(), title, dto.status());
+    }
+
+    public BookInstanceDto mapToBookInstanceDto(BookInstance instance) {
+        return new BookInstanceDto(instance.getId(), instance.getTitle().getId(), instance.getStatus());
+    }
+
+    public List<BookInstanceDto> mapToBookInstanceDtoList(List<BookInstance> instances) {
+        return instances.stream()
+                .map(this::mapToBookInstanceDto)
+                .toList();
     }
 }
