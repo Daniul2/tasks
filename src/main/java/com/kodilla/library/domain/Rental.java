@@ -18,7 +18,7 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "BOOK_INSTANCE_ID")
     private BookInstance bookInstance;
 
