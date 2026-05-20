@@ -54,5 +54,5 @@ tasks.named('test') {
 
 
 springBoot {
-	mainClass = 'com.kodilla.library.LibraryApplication'
+	mainClass = 'com.reservation.ReservationSystemApplication'
 }
