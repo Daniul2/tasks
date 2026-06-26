@@ -23,9 +23,12 @@ public class TaskController {
         return ResponseEntity.ok(taskMapper.mapToTaskDtoList(tasks));
     }
 
-    @GetMapping(value = "{taskId}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable Long taskId) throws TaskNotFoundException {
-        return ResponseEntity.ok(taskMapper.mapToTaskDto(service.getTask(taskId).orElseThrow(TaskNotFoundException::new)));
+    @GetMapping("/{taskId}")
+    public ResponseEntity<TaskDto> getTask(@PathVariable Long taskId) {
+        return service.getTask(taskId)
+                .map(taskMapper::mapToTaskDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(value = "{taskId}")
@@ -47,4 +50,5 @@ public class TaskController {
         service.saveTask(task);
         return ResponseEntity.ok().build();
     }
+
 }
