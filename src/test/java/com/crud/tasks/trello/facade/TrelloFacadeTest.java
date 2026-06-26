@@ -1,6 +1,9 @@
 package com.crud.tasks.trello.facade;
 
+import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.TrelloBoardDto;
+import com.crud.tasks.domain.TrelloCard;
+import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.domain.TrelloList;
 import com.crud.tasks.domain.TrelloListDto;
 import com.crud.tasks.mapper.TrelloMapper;
@@ -17,6 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
@@ -61,6 +65,46 @@ class TrelloFacadeTest {
         // Then
         assertNotNull(trelloBoardDtos);
         assertEquals(0, trelloBoardDtos.size());
+    }
+
+    @Test
+    void shouldCreateCard() {
+        // Given
+        TrelloCardDto trelloCardDto = new TrelloCardDto("Test task", "Description", "top", "list-1");
+        TrelloCard trelloCard = new TrelloCard("Test task", "Description", "top", "list-1");
+        CreatedTrelloCardDto createdCard = new CreatedTrelloCardDto("99", "Test task", "http://trello.com/card/99");
+
+        when(trelloMapper.mapToCard(trelloCardDto)).thenReturn(trelloCard);
+        when(trelloMapper.mapToCardDto(trelloCard)).thenReturn(trelloCardDto);
+        when(trelloService.createTrelloCard(any(TrelloCardDto.class))).thenReturn(createdCard);
+
+        // When
+        CreatedTrelloCardDto result = trelloFacade.createCard(trelloCardDto);
+
+        // Then
+        assertNotNull(result);
+        assertEquals("99", result.getId());
+        assertEquals("Test task", result.getName());
+        assertEquals("http://trello.com/card/99", result.getShortUrl());
+    }
+
+    @Test
+    void shouldCreateCardWithTestNameAndLog() {
+        // Given — card name contains "test", triggers the info log branch in TrelloValidator
+        TrelloCardDto trelloCardDto = new TrelloCardDto("test card", "desc", "top", "list-2");
+        TrelloCard trelloCard = new TrelloCard("test card", "desc", "top", "list-2");
+        CreatedTrelloCardDto createdCard = new CreatedTrelloCardDto("100", "test card", "http://trello.com/card/100");
+
+        when(trelloMapper.mapToCard(trelloCardDto)).thenReturn(trelloCard);
+        when(trelloMapper.mapToCardDto(trelloCard)).thenReturn(trelloCardDto);
+        when(trelloService.createTrelloCard(any(TrelloCardDto.class))).thenReturn(createdCard);
+
+        // When
+        CreatedTrelloCardDto result = trelloFacade.createCard(trelloCardDto);
+
+        // Then
+        assertNotNull(result);
+        assertEquals("100", result.getId());
     }
 
     @Test
