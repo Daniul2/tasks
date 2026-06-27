@@ -65,5 +65,5 @@ tasks.named('test') {
 
 
 springBoot {
-	mainClass = 'com.reservation.ReservationSystemApplication'
+	mainClass = 'com.crud.tasks.TasksApplication'
 }
