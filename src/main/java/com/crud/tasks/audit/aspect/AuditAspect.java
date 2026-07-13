@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class AuditAspect {
-    @Around("execution(* com.example.audit.service.*.*(..))")
-    public Object measureTime(ProceedingJoinPoint pjp)throws Throwable{
+    @Around("execution(* com.crud.tasks.audit.service.*.*(..))")
+    public Object measureTime(ProceedingJoinPoint pjp) throws Throwable {
         long start = System.currentTimeMillis();
 
         Object result = pjp.proceed();

@@ -1,4 +1,4 @@
-package com.crud.tasks.audit.aspect;
+package com.crud.tasks.audit.service;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
