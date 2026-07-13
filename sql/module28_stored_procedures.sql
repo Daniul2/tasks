@@ -70,7 +70,7 @@ BEGIN
             WHERE book_id = BK_ID
                INTO BOOKSRENTED;
 
-         SELECT DATEDIFF(MAX(rent_date), MIN(rent_date)) + 1 FROM RENTS
+         SELECT DATEDIFF(MAX(rent_date), MIN(rent_date)) FROM RENTS
             WHERE book_id = BK_ID
                INTO DAYS;
 
