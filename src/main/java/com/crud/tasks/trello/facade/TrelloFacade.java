@@ -1,6 +1,7 @@
 package com.crud.tasks.trello.facade;
 
 import com.crud.tasks.domain.CreatedTrelloCardDto;
+import com.crud.tasks.domain.TrelloBoard;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCard;
 import com.crud.tasks.domain.TrelloCardDto;
@@ -34,5 +35,4 @@ public class TrelloFacade {
         trelloValidator.validateCard(trelloCard);
         return trelloService.createTrelloCard(trelloMapper.mapToCardDto(trelloCard));
     }
-
 }
